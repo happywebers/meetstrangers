@@ -37,3 +37,7 @@ const acceptCallHandler = () => {
 const rejectCallHandler = () => {
     console.log("call rejected")
 }
+
+const callingDailogRejectCallHandler = () => {
+    console.log('rejecting the call');
+}
