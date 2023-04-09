@@ -20,7 +20,8 @@ io.on("connection", (socket) => {
     console.log(connectedPeers);
 
     socket.on("pre-offer", (data) => {
-        console.log("pre-offer-came");
+        console.log("pre-offer-came analysis");
+        console.log(data);
         const { calleePersonalCode, callType } = data;
         console.log(calleePersonalCode);
         console.log(connectedPeers);
@@ -29,18 +30,57 @@ io.on("connection", (socket) => {
         );
         console.log(connectedPeer);
 
-        if (connectedPeers) {
+        if (connectedPeer) {
+            // console.log('if block triggered')
             const data = {
                 callerSocketId: socket.id,
                 callType,
             };
             io.to(calleePersonalCode).emit("pre-offer", data);
+        } else {
+            // console.log("else block triggered")
+            const data = {
+                preOfferAnswer: "CALLEE_NOT_FOUND",
+            };
+            io.to(socket.id).emit("pre-offer-answer", data);
         }
     });
 
+
+
+
+
     socket.on("pre-offer-answer", (data) => {
-        console.log("pre offer answer came");
+
+        console.log("pre offer answer bug")
         console.log(data);
+
+        const { callerSocketId } = data;
+        console.log(callerSocketId)
+
+        const connectedPeer = connectedPeers.find(
+            (peerSocketId) => {
+                return peerSocketId === callerSocketId;
+            }
+        );
+        console.log(connectedPeers);
+        console.log(connectedPeer);
+
+        if (connectedPeer) {
+            io.to(data.callerSocketId).emit("pre-offer-answer", data);
+        }
+    });
+
+    socket.on("webRTC-signaling", (data) => {
+        const { connectedUserSocketId } = data;
+
+        const connectedPeer = connectedPeers.find(
+            (peerSocketId) => peerSocketId === connectedUserSocketId
+        );
+
+        if (connectedPeer) {
+            io.to(connectedUserSocketId).emit("webRTC-signaling", data);
+        }
     });
 
     socket.on("disconnect", () => {
