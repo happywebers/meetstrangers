@@ -41,6 +41,11 @@ const createPeerConnection = () => {
         console.log('greeting ice candidates from stun server')
         if (event.candidate) {
             //sending ice candidates to other peer
+            wss.sendDataUsingWebRTCSignaling({
+                connectedUserSocketId: connectedUserDetails.socketId,
+                type: constants.webRTCSignaling.ICE_CANDIDATE,
+                candidate: event.candidate,
+            })
         }
     }
 
@@ -150,16 +155,43 @@ export const handlePreOfferAnswer = (data) => {
 };
 
 const sendWebRTCOffer = async () => {
+    console.log("webrtchandler 153 working")
     const offer = await peerConnection.createOffer();
     await peerConnection.setLocalDescription(offer);
+    console.log(connectedUserDetails);
     wss.sendDataUsingWebRTCSignaling({
-        connectedUserDetails: connectedUserDetails.socketId,
+        connectedUserSocketId: connectedUserDetails.socketId,
         type: constants.webRTCSignaling.OFFER,
         offer: offer,
     });
 }
 
-export const handleWebRTCOffer = (data) => {
-    console.log('WebRTC offer came');
-    console.log(data);
+export const handleWebRTCOffer = async (data) => {
+    // console.log("165 line to trigger waiting")
+    // console.log('WebRTC offer came');
+    // console.log(data);
+    await peerConnection.setRemoteDescription(data.offer);
+    const answer = await peerConnection.createAnswer();
+    await peerConnection.setLocalDescription(answer);
+    wss.sendDataUsingWebRTCSignaling({
+        connectedUserSocketId: connectedUserDetails.socketId,
+        type: constants.webRTCSignaling.ANSWER,
+        answer: answer,
+    });
 };
+
+export const handleWebRTCAnswer = async (data) => {
+    console.log("handling webrtc answer");
+    await peerConnection.setRemoteDescription(data.answer);
+};
+
+export const handleWebRTCCandidate = async (data) => {
+    try {
+        await peerConnection.addIceCandidate(data.candidate);
+    } catch (err) {
+        console.error(
+            "error occured when trying toa dd receinv3e ice candidatees",
+            err
+        );
+    }
+}

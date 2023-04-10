@@ -24,9 +24,17 @@ export const registerSocketEvents = (socket) => {
     });
 
     socket.on("webRTC-signaling", (data) => {
+        // console.log("data check below");
+        // console.log(data);
         switch (data.type) {
             case constants.webRTCSignaling.OFFER:
                 webRTCHandler.handleWebRTCOffer(data);
+                break;
+            case constants.webRTCSignaling.ANSWER:
+                webRTCHandler.handleWebRTCAnswer(data);
+                break;
+            case constants.webRTCSignaling.ICE_CANDIDATE:
+                webRTCHandler.handleWebRTCCandidate(data);
                 break;
             default:
                 return;
@@ -45,6 +53,6 @@ export const sendPreOfferAnswer = (data) => {
 };
 
 export const sendDataUsingWebRTCSignaling = (data) => {
-    socketIO.emit("webRTC-signaling");
+    socketIO.emit("webRTC-signaling", data);
 }
 

@@ -52,8 +52,8 @@ io.on("connection", (socket) => {
 
     socket.on("pre-offer-answer", (data) => {
 
-        console.log("pre offer answer bug")
-        console.log(data);
+        // console.log("pre offer answer bug")
+        // console.log(data);
 
         const { callerSocketId } = data;
         console.log(callerSocketId)
@@ -72,11 +72,16 @@ io.on("connection", (socket) => {
     });
 
     socket.on("webRTC-signaling", (data) => {
+        console.log("webrtc signaliing bug data infor below");
+        console.log(data);
         const { connectedUserSocketId } = data;
 
         const connectedPeer = connectedPeers.find(
             (peerSocketId) => peerSocketId === connectedUserSocketId
         );
+
+        console.log("webrtc signaling peer");
+        console.log(connectedPeer);
 
         if (connectedPeer) {
             io.to(connectedUserSocketId).emit("webRTC-signaling", data);
