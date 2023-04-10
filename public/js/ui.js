@@ -132,6 +132,17 @@ const showVideoCallElements = () => {
     //block panel
     disableDashboard();
 };
+
+//ui call buttons
+const micOnImgSrc = "./utils/images/mic.png";
+const micOffImgSrc = "./utils/images/micOff.png";
+
+export const updateMicButton = (micActive) => {
+    const micButtonImage = document.getElementById("mic_button_image");
+    micButtonImage.src = micActive ? micOffImgSrc : micOnImgSrc;
+}
+
+
 // ui helper functions
 
 const enableDashboard = () => {
