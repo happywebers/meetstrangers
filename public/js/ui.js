@@ -150,6 +150,19 @@ export const updateCameraButton = (cameraActive) => {
     cameraButtonImage.src = cameraActive ? cameraOffImgSrc : cameraOnImgSrc;
 }
 
+//ui messages
+
+export const appendMessage = (message, right = false) => {
+    console.log(message);
+    const messageContainer = document.getElementById("message_container");
+    const messageElement = right ? elements.getRightMessage(message) : elements.getLeftMessage(message);
+    messageContainer.appendChild(messageElement);
+};
+
+export const clearMessenger = () => {
+    const messageContainer = document.getElementById("messages_container");
+    messageContainer.querySelectorAll("*").forEach((n) => n.remove());
+};
 
 // ui helper functions
 

@@ -7,6 +7,7 @@ import * as store from "./store.js";
 let connectedUserDetails;
 let peerConnection;
 let screenSharingStream;
+let dataChannel;
 
 const defaultConstraints = {
     audio: true,
@@ -37,6 +38,27 @@ export const getLocalPreview = () => {
 
 const createPeerConnection = () => {
     peerConnection = new RTCPeerConnection(configuration);
+
+    dataChannel = peerConnection.createDataChannel('chat');
+
+    peerConnection.ondatachannel = (event) => {
+        const dataChannel = event.channel;
+        dataChannel.onopen = () => {
+            console.log("peer connection is ready to receive data channel messages");
+        }
+
+        dataChannel.onmessage = (event) => {
+            console.log("message came from data channel");
+            const message = JSON.parse(event.data);
+            console.log(message);
+
+            ui.appendMessage(message);
+        };
+    };
+
+
+
+
 
     peerConnection.onicecandidate = (event) => {
         console.log('greeting ice candidates from stun server')
@@ -72,6 +94,11 @@ const createPeerConnection = () => {
         }
     }
 };
+
+export const sendMessageUsingDataChannel = (message) => {
+    const stringifiedMessage = JSON.stringify(message);
+    dataChannel.send(stringifiedMessage);
+}
 
 
 export const sendPreOffer = (callType, calleePersonalCode) => {
