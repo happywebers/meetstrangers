@@ -153,10 +153,11 @@ export const updateCameraButton = (cameraActive) => {
 //ui messages
 
 export const appendMessage = (message, right = false) => {
-    console.log(message);
-    const messageContainer = document.getElementById("message_container");
-    const messageElement = right ? elements.getRightMessage(message) : elements.getLeftMessage(message);
-    messageContainer.appendChild(messageElement);
+    const messagesContainer = document.getElementById("messages_container");
+    const messageElement = right
+        ? elements.getRightMessage(message)
+        : elements.getLeftMessage(message);
+    messagesContainer.appendChild(messageElement);
 };
 
 export const clearMessenger = () => {

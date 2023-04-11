@@ -51,7 +51,6 @@ const createPeerConnection = () => {
             console.log("message came from data channel");
             const message = JSON.parse(event.data);
             console.log(message);
-
             ui.appendMessage(message);
         };
     };
