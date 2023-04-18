@@ -72,21 +72,37 @@ io.on("connection", (socket) => {
     });
 
     socket.on("webRTC-signaling", (data) => {
-        console.log("webrtc signaliing bug data infor below");
-        console.log(data);
         const { connectedUserSocketId } = data;
 
         const connectedPeer = connectedPeers.find(
             (peerSocketId) => peerSocketId === connectedUserSocketId
         );
 
-        console.log("webrtc signaling peer");
-        console.log(connectedPeer);
-
         if (connectedPeer) {
             io.to(connectedUserSocketId).emit("webRTC-signaling", data);
         }
     });
+
+    socket.on("user-hanged-up", (data) => {
+        console.log("user hang up app.js");
+        console.log(data);
+        const { connectedUserSocketId } = data;
+
+        console.log(connectedUserSocketId);
+
+        const connectedPeer = connectedPeers.find(
+            (peerSocketId) => peerSocketId === connectedUserSocketId
+        );
+
+        console.log("user hang up connected peers:-");
+        console.log(connectedPeer);
+
+        if (connectedPeer) {
+            io.to(connectedUserSocketId).emit("user-hanged-up");
+        }
+    });
+
+
 
     socket.on("disconnect", () => {
         console.log("user disconnected");
