@@ -4,6 +4,7 @@ import * as webRTCHandler from "./webRTCHandler.js";
 import * as constants from './constant.js';
 import * as ui from './ui.js';
 import * as recordingUtils from './recordingUtils.js';
+import * as strangerUtils from './strangerUtils.js';
 
 
 // initialisation of socketio connection
@@ -39,6 +40,27 @@ personalCodeVideoButton.addEventListener("click", () => {
     const calleePersonalCode = document.getElementById('personal_code_input').value;
     const callType = constants.callType.VIDEO_PERSONAL_CODE;
     webRTCHandler.sendPreOffer(callType, calleePersonalCode);
+});
+
+const strangerChatButton = document.getElementById("stranger_chat_button");
+strangerChatButton.addEventListener("click", () => {
+    strangerUtils.getStrangerSocketIdAndConnect(constants.callType.CHAT_STRANGER);
+});
+
+const strangerVideoButton = document.getElementById("stranger_video_button");
+strangerVideoButton.addEventListener("click", () => {
+    strangerUtils.getStrangerSocketIdAndConnect(
+        constants.callType.VIDEO_STRANGER
+    );
+});
+
+// register event for allow connections from strangers
+const checkbox = document.getElementById("allow_strangers_checkbox");
+checkbox.addEventListener("click", () => {
+    const checkboxState = store.getState().allowConnectionsFromStrangers;
+    ui.updateStrangerCheckbox(!checkboxState);
+    store.setAllowConnectionsFromStranger(!checkboxState);
+    strangerUtils.changeStrangerConnectionStatus(!checkboxState);
 });
 
 

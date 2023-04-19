@@ -88,7 +88,8 @@ const createPeerConnection = () => {
         remoteStream.addTrack(event.track);
     }
 
-    if (connectedUserDetails.callType === constants.callType.VIDEO_PERSONAL_CODE) {
+    if (connectedUserDetails.callType === constants.callType.VIDEO_PERSONAL_CODE ||
+        connectedUserDetails.callType === constants.callType.VIDEO_STRANGER) {
         const localStream = store.getState().localStream;
         for (const track of localStream.getTracks()) {
             peerConnection.addTrack(track, localStream);
@@ -116,6 +117,15 @@ export const sendPreOffer = (callType, calleePersonalCode) => {
         store.setCallState(constants.callState.CALL_UNAVAILABLE);
         wss.sendPreOffer(data);
     }
+
+    if (
+        callType === constants.callType.CHAT_STRANGER ||
+        callType === constants.callType.VIDEO_STRANGER
+    ) {
+        createPeerConnection();
+        sendPreOfferAnswer(constants.preOfferAnswer.CALL_ACCEPTED);
+        ui.showCallElements(connectedUserDetails.callType);
+    }
 };
 
 export const handlePreOffer = (data) => {
@@ -137,6 +147,15 @@ export const handlePreOffer = (data) => {
 
     if (callType === constants.callType.CHAT_PERSONAL_CODE || constants.callType.VIDEO_PERSONAL_CODE) {
         ui.showIncomingCallDialog(callType, acceptCallHandler, rejectCallHandler);
+    }
+
+    if (
+        callType === constants.callType.CHAT_STRANGER ||
+        callType === constants.callType.VIDEO_STRANGER
+    ) {
+        createPeerConnection();
+        sendPreOfferAnswer(constants.preOfferAnswer.CALL_ACCEPTED);
+        ui.showCallElements(connectedUserDetails.callType);
     }
 };
 
