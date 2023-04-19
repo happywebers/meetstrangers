@@ -200,6 +200,10 @@ export const switchRecordingButtons = (switchForResumeButton = false) => {
     }
 };
 
+// ui after hangup
+
+
+
 // ui helper functions
 
 const enableDashboard = () => {
