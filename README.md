@@ -7,4 +7,5 @@
 # testing for new CI/CD pipeline
 # To Run the Code
 # npm install - to install all dependency
-# nodemon app.js - to run the app
+# nodemon app.js - to run the app - if not use - node app.js
+# http://localhost:3002/ - port address
