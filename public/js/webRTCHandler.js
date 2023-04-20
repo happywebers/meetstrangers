@@ -129,9 +129,6 @@ export const sendPreOffer = (callType, calleePersonalCode) => {
             callType,
             calleePersonalCode,
         };
-        // createPeerConnection();
-        // sendPreOfferAnswer(constants.preOfferAnswer.CALL_ACCEPTED);
-        // ui.showCallElements(connectedUserDetails.callType);
         store.setCallState(constants.callState.CALL_UNAVAILABLE);
         wss.sendPreOffer(data);
     }
