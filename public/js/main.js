@@ -42,13 +42,17 @@ personalCodeVideoButton.addEventListener("click", () => {
     webRTCHandler.sendPreOffer(callType, calleePersonalCode);
 });
 
+//stranger functions
+
 const strangerChatButton = document.getElementById("stranger_chat_button");
 strangerChatButton.addEventListener("click", () => {
+    console.log('stranger chat button clicked');
     strangerUtils.getStrangerSocketIdAndConnect(constants.callType.CHAT_STRANGER);
 });
 
 const strangerVideoButton = document.getElementById("stranger_video_button");
 strangerVideoButton.addEventListener("click", () => {
+    console.log('stranger video button clicked');
     strangerUtils.getStrangerSocketIdAndConnect(
         constants.callType.VIDEO_STRANGER
     );
@@ -57,7 +61,7 @@ strangerVideoButton.addEventListener("click", () => {
 // register event for allow connections from strangers
 const checkbox = document.getElementById("allow_strangers_checkbox");
 checkbox.addEventListener("click", () => {
-    const checkboxState = store.getState().allowConnectionsFromStrangers;
+    const checkboxState = store.getState().allowConnectionsFromStranger;
     ui.updateStrangerCheckbox(!checkboxState);
     store.setAllowConnectionsFromStranger(!checkboxState);
     strangerUtils.changeStrangerConnectionStatus(!checkboxState);

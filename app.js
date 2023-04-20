@@ -139,6 +139,7 @@ io.on("connection", (socket) => {
         io.to(socket.id).emit("stranger-socket-id", data);
     });
 
+    
     socket.on("disconnect", () => {
         const newConnectedPeers = connectedPeers.filter(
             (peerSocketId) => peerSocketId !== socket.id
