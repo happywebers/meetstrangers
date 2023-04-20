@@ -115,6 +115,8 @@ io.on("connection", (socket) => {
             );
             connectedPeersStrangers = newConnectedPeersStrangers;
         }
+        console.log("connected peers Stranger array working check == ")
+        console.log(connectedPeersStrangers);
     });
 
     socket.on("get-stranger-socket-id", () => {
@@ -139,7 +141,7 @@ io.on("connection", (socket) => {
         io.to(socket.id).emit("stranger-socket-id", data);
     });
 
-    
+
     socket.on("disconnect", () => {
         const newConnectedPeers = connectedPeers.filter(
             (peerSocketId) => peerSocketId !== socket.id
