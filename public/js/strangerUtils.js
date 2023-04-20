@@ -15,6 +15,7 @@ export const getStrangerSocketIdAndConnect = (callType) => {
 };
 
 export const connectWithStranger = (data) => {
+    console.log(data.randomStrangerSocketId);
     if (data.randomStrangerSocketId) {
         webRTCHandler.sendPreOffer(strangerCallType, data.randomStrangerSocketId);
     } else {

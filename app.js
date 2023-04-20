@@ -138,6 +138,9 @@ io.on("connection", (socket) => {
             randomStrangerSocketId,
         };
 
+        console.log("data of stranger-socket-id==");
+        console.log(data);
+
         io.to(socket.id).emit("stranger-socket-id", data);
     });
 

@@ -30,8 +30,7 @@ export const registerSocketEvents = (socket) => {
     })
 
     socket.on("webRTC-signaling", (data) => {
-        // console.log("data check below");
-        // console.log(data);
+
         switch (data.type) {
             case constants.webRTCSignaling.OFFER:
                 webRTCHandler.handleWebRTCOffer(data);
@@ -47,6 +46,8 @@ export const registerSocketEvents = (socket) => {
         }
     });
     socket.on('stranger-socket-id', (data) => {
+        console.log("stranger-socket-id data check below");
+        console.log(data);
         strangerUtils.connectWithStranger(data);
     })
 };

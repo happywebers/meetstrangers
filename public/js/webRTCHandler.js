@@ -88,6 +88,8 @@ const createPeerConnection = () => {
         remoteStream.addTrack(event.track);
     }
 
+    //add our stream to peer connection
+
     if (connectedUserDetails.callType === constants.callType.VIDEO_PERSONAL_CODE ||
         connectedUserDetails.callType === constants.callType.VIDEO_STRANGER) {
         const localStream = store.getState().localStream;
@@ -108,7 +110,8 @@ export const sendPreOffer = (callType, calleePersonalCode) => {
         callType,
         socketId: calleePersonalCode,
     };
-    if (callType === constants.callType.CHAT_PERSONAL_CODE || constants.callType.VIDEO_PERSONAL_CODE) {
+    if (callType === constants.callType.CHAT_PERSONAL_CODE ||
+        constants.callType.VIDEO_PERSONAL_CODE) {
         const data = {
             callType,
             calleePersonalCode,
@@ -122,9 +125,15 @@ export const sendPreOffer = (callType, calleePersonalCode) => {
         callType === constants.callType.CHAT_STRANGER ||
         callType === constants.callType.VIDEO_STRANGER
     ) {
-        createPeerConnection();
-        sendPreOfferAnswer(constants.preOfferAnswer.CALL_ACCEPTED);
-        ui.showCallElements(connectedUserDetails.callType);
+        const data = {
+            callType,
+            calleePersonalCode,
+        };
+        // createPeerConnection();
+        // sendPreOfferAnswer(constants.preOfferAnswer.CALL_ACCEPTED);
+        // ui.showCallElements(connectedUserDetails.callType);
+        store.setCallState(constants.callState.CALL_UNAVAILABLE);
+        wss.sendPreOffer(data);
     }
 };
 
@@ -145,7 +154,8 @@ export const handlePreOffer = (data) => {
     store.setCallState(constants.callState.CALL_UNAVAILABLE);
 
 
-    if (callType === constants.callType.CHAT_PERSONAL_CODE || constants.callType.VIDEO_PERSONAL_CODE) {
+    if (callType === constants.callType.CHAT_PERSONAL_CODE ||
+        constants.callType.VIDEO_PERSONAL_CODE) {
         ui.showIncomingCallDialog(callType, acceptCallHandler, rejectCallHandler);
     }
 
@@ -347,7 +357,8 @@ const closePeerConnectionAndResetState = () => {
         peerConnection = null;
     }
 
-    if (connectedUserDetails.callType === constants.callType.VIDEO_PERSONAL_CODE || connectedUserDetails.callType === constants.callType.VIDEO_STRANGER) {
+    if (connectedUserDetails.callType === constants.callType.VIDEO_PERSONAL_CODE ||
+        connectedUserDetails.callType === constants.callType.VIDEO_STRANGER) {
         store.getState().localStream.getVideoTracks()[0].enabled = true;
         store.getState().localStream.getAudioTracks()[0].enabled = true;
     }
