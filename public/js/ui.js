@@ -247,15 +247,19 @@ export const updateUIAfterHangUp = (callType) => {
     clearMessenger();
 
     updateMicButton(false);
-    updateCameraButton(false);
+
 
     //hide remote video and show placeholder
     const remoteVideo = document.getElementById("remote_video");
     hideElement(remoteVideo);
-    const placeholder = document.getElementById('video_placeholder');
+
+    const placeholder = document.getElementById("video_placeholder");
     showElement(placeholder);
 
     removeAllDialogs();
+
+    //causing error - caught TypeError: Cannot set properties of null (setting 'src')
+    updateCameraButton(false);
 
 
 }
