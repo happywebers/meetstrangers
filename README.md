@@ -1,11 +1,4 @@
-# mrstranger
-# mrstranger
-# mrstranger
-# mrstranger221
-# only able to push through github desktop and not from terminal
-# test to check working
-# testing for new CI/CD pipeline
-# To Run the Code
 # npm install - to install all dependency
-# nodemon app.js - to run the app - if not use - node app.js
+# nodemon app.js - to run the app - if it doesn't run use - node app.js
 # http://localhost:3002/ - port address
+# Bugs - black screen after hangup, video call button background - solved, inforDialog prompt after accepting call in stranger.
